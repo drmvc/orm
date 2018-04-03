@@ -171,8 +171,6 @@ class Builder implements BuilderInterface
     {
         $this->prepareSql();
         $sql = $this->getSql();
-        // TODO: Add clean method
-        // clean sql
         $this->clean();
 
         return $sql;

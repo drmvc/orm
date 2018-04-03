@@ -20,7 +20,5 @@ interface BuilderInterface
 
     public function limit(int $limit): BuilderInterface;
 
-
-
     public function __toString(): string;
 }
