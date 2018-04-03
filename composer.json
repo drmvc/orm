@@ -1,6 +1,6 @@
 {
   "name": "drmvc/doctorineorm",
-  "description": "Image helper",
+  "description": "Lightweight ORM",
   "homepage": "https://drmvc.com/",
   "license": "MIT",
   "keywords": [

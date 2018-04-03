@@ -53,7 +53,7 @@ class Builder implements BuilderInterface
 
     public function where(array $where): BuilderInterface
     {
-        $this->_where = \array_merge($this->_where, $where);
+        $this->_where += $where;
 
         return $this;
     }
@@ -74,19 +74,19 @@ class Builder implements BuilderInterface
         $placeholders = $this->map($data, ':update');
         $this->setSql('UPDATE ' . $this->getTable() . ' SET ' . implode(', ',
                 $this->keyValueFormat($data, $placeholders)));
-        $this->setPlaceholders(array_values($data), 'update');
+        $this->setPlaceholders($data, 'update');
 
         return $this;
     }
 
     private function map(array $array, string $prefix): array
     {
-        return array_map(
-            [$this, 'setPrefix'],
-            array_keys($array),
-            array_values($array),
-            $prefix
-        );
+        $result = [];
+        foreach($array as $key => $value) {
+            $result[$prefix . '_' . $key] = $value;
+        }
+
+        return $result;
     }
 
     private function keyValueFormat(array $keys, array $values): array
@@ -100,12 +100,14 @@ class Builder implements BuilderInterface
         );
     }
 
-    private function setPlaceholders(array $placeholders, string $prefix = null)//: void 7.1
+    private function setPlaceholders(array $placeholders, string $prefix)//: void 7.1
     {
-        if (null !== $prefix) {
-            $placeholders = $this->map($placeholders, $prefix);
-        }
-        $this->_placeholders = \array_merge($this->_placeholders, $placeholders);
+        $this->_placeholders += $this->map($placeholders, $prefix);
+    }
+
+    public function getPlaceholders(): array
+    {
+        return $this->_placeholders;
     }
 
     public function insert(array $data): BuilderInterface
@@ -113,7 +115,7 @@ class Builder implements BuilderInterface
         $placeholders = $this->map($data, ':insert');
         $this->setSql('INSERT INTO ' . $this->getTable() . ' (' . implode(', ',
                 array_keys($data)) . ') VALUES (' . implode(', ', array_keys($placeholders)) . ')');
-        $this->setPlaceholders(array_values($data), 'insert');
+        $this->setPlaceholders($data, 'insert');
 
         return $this;
     }
@@ -136,24 +138,20 @@ class Builder implements BuilderInterface
         $this->setSql(
             $this->getSql()
             . $this->prepareWhere()
-            . ($this > _limit ? 'LIMIT ' . $this->_limit . ' OFFSET ' . $this->_offset : '')
+            . ($this->_limit ? 'LIMIT ' . $this->_limit . ' OFFSET ' . $this->_offset : '')
         );
     }
 
     private function prepareWhere(): string
     {
-        $placeholders = $this->map($this->_where, ':where');
-        $where = $this->keyValueFormat($this->_where, $placeholders);
-        $this->setPlaceholders(array_values($this->_where), 'where');
+        if (\count($this->_where)) {
+            $placeholders = $this->map($this->_where, ':where');
+            $where = $this->keyValueFormat($this->_where, $placeholders);
+            $this->setPlaceholders($this->_where, 'where');
 
-        return \count($this->_where) ? 'WHERE ' . implode(' AND ', $where) . ' ' : '';
-    }
-
-    private function setPrefix(string $key, $value, string $prefix): array
-    {
-        return [
-            [$prefix . '_' . $key] => $value
-        ];
+            return 'WHERE ' . implode(' AND ', $where) . ' ';
+        }
+        return '';
     }
 
     public function __toString(): string
