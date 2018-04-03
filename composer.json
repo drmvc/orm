@@ -1,0 +1,29 @@
+{
+  "name": "drmvc/doctorineorm",
+  "description": "Image helper",
+  "homepage": "https://drmvc.com/",
+  "license": "MIT",
+  "keywords": [
+    "ORM",
+    "Data Mapper"
+  ],
+  "type": "library",
+  "authors": [
+    {
+      "name": "Koenig",
+      "email": "compolom@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "DrMVC\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0"
+  },
+  "minimum-stability": "stable"
+}
