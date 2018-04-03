@@ -73,7 +73,7 @@ class Builder implements BuilderInterface
         $this->where($where);
         $placeholders = $this->map($data, ':update');
         $this->setSql('UPDATE ' . $this->getTable() . ' SET ' . implode(', ',
-                $this->keyValueFormat($data, $placeholders)));
+                $this->keyValueFormat($data, $placeholders)) . ' ');
         $this->setPlaceholders($data, 'update');
 
         return $this;
@@ -118,7 +118,7 @@ class Builder implements BuilderInterface
     {
         $placeholders = $this->map($data, ':insert');
         $this->setSql('INSERT INTO ' . $this->getTable() . ' (' . implode(', ',
-                array_keys($data)) . ') VALUES (' . implode(', ', array_keys($placeholders)) . ')');
+                array_keys($data)) . ') VALUES (' . implode(', ', array_keys($placeholders)) . ') ');
         $this->setPlaceholders($data, 'insert');
 
         return $this;
@@ -158,13 +158,22 @@ class Builder implements BuilderInterface
         return '';
     }
 
+    private function clean()//: void 7.1
+    {
+        #$this->__table;
+        $this->_sql = null;
+        $this->_where = [];
+        $this->_limit = null;
+        $this->_offset = null;
+    }
+
     public function __toString(): string
     {
         $this->prepareSql();
         $sql = $this->getSql();
         // TODO: Add clean method
         // clean sql
-        $this->_sql = null;
+        $this->clean();
 
         return $sql;
     }
