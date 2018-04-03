@@ -107,7 +107,11 @@ class Builder implements BuilderInterface
 
     public function getPlaceholders(): array
     {
-        return $this->_placeholders;
+        $placeholders = $this->_placeholders;
+        // clean placeholders
+        $this->_placeholders = [];
+
+        return $placeholders;
     }
 
     public function insert(array $data): BuilderInterface
@@ -157,7 +161,11 @@ class Builder implements BuilderInterface
     public function __toString(): string
     {
         $this->prepareSql();
+        $sql = $this->getSql();
+        // TODO: Add clean method
+        // clean sql
+        $this->_sql = null;
 
-        return $this->getSql();
+        return $sql;
     }
 }

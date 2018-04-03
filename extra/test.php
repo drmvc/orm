@@ -6,7 +6,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $builder = new Builder('test_table');
 
-echo 'SELECT<br>';
+echo 'SELECT<br>---<br>';
 
 $builder
     ->select()
@@ -16,3 +16,4 @@ $builder
 echo $builder;
 
 echo '<pre>' . print_r($builder->getPlaceholders(), true) . '</pre>';
+echo '<pre>' . print_r($builder, true) . '</pre>';
