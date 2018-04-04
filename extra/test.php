@@ -2,24 +2,22 @@
 
 namespace Test;
 
+use DrMVC\Database;
+use DrMVC\Config;
 use DrMVC\DoctorineORM\Entity;
 use DrMVC\DoctorineORM\Orm;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$config = include('config.php');
+// Create config object and load database configuration
+$config = new Config();
+$config->load(__DIR__ . '/config.php');
 
-$pdo = new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['username'],
-    $config['password'],
-    [
-        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-        #PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-        \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4'",
-        \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,
-    ]
-);
+// Open connection with database
+$db = new Database($config);
+$instance = $db->getInstance(); // PDO here and not QueryInterface
 
-$orm = new Orm('test_table', $pdo);
+$orm = new Orm('test_table', $instance);
 
 $entity = $orm->findById(1);
 
