@@ -4,47 +4,69 @@ namespace DrMVC\DoctorineORM;
 
 class Entity
 {
+    /**
+     * Magic container
+     *
+     * @var array
+     */
+    private $_data;
 
-    const SELECT = 1;
-
-    const UPDATE = 2;
-
-    const INSERT = 3;
-
-    const DELETE = 4;
-
-    private $_flag = self::SELECT;
-
-    private $_table;
-
-    public function __construct(string $table)
+    public function __construct()
     {
-        $this->_table = $table;
     }
 
-    private $data;
-
-    public function __set(string $name, $value)//: void 7.1
+    /**
+     * @return array
+     */
+    public function getData(): array
     {
-        $this->data[$name] = $value;
+        return $this->_data;
     }
 
+    /**
+     * @param string $name
+     * @return mixed|null
+     */
     public function __get(string $name)
     {
-        return $this->data[$name] ?? null;
+        return $this->_data[$name] ?? null;
     }
 
+    /**
+     * @param string $name
+     * @param $value
+     */
+    public function __set(string $name, $value)//: void 7.1
+    {
+        $this->_data[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
     public function __isset(string $name): bool
     {
-        return isset($this->data[$name]);
+        return isset($this->_data[$name]);
     }
 
+    /**
+     * @param string $name
+     */
     public function __unset(string $name)//: void 7.1
     {
-        unset($this->data[$name]);
+        unset($this->_data[$name]);
     }
 
-    public function __call($name, $arguments) {
+    /**
+     * Magic setters and getters
+     *
+     * @param $name
+     * @param $arguments
+     * @return bool|mixed|null
+     */
+    public function __call($name, $arguments)
+    {
         $action = substr($name, 0, 3);
         $property = strtolower(substr($name, 3));
         switch ($action) {
@@ -53,7 +75,6 @@ class Entity
                 break;
 
             case 'set':
-                $this->_flag = isset($this->$property) ? self::UPDATE : self::INSERT;
                 $this->$property = $arguments[0];
                 break;
 

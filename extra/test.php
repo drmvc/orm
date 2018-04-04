@@ -2,6 +2,7 @@
 
 namespace Test;
 
+use DrMVC\DoctorineORM\Entity;
 use DrMVC\DoctorineORM\Orm;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -20,13 +21,24 @@ $pdo = new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname']
 
 $orm = new Orm('test_table', $pdo);
 
-#echo '<pre>' . print_r($orm, true) . '</pre>';
-
 $entity = $orm->findById(1);
 
-echo '<pre>' . print_r($entity, true) . '</pre>';
+$entity->name = 'Pavel'; // =)
+$entity->email = 'pavel@mail.ru';
 
-$entity = $orm->findAll();
+$orm->saveEntity($entity);
 
-echo '<pre>' . print_r($entity, true) . '</pre>';
 
+$entity2 = new Entity();
+
+$entity2->setName('Kolya');
+//$entity2->email = '';
+$entity2->setPassword('qwerty3');
+
+$orm->saveEntity($entity2);
+
+$entity3 = $orm->findAll();
+
+foreach ($entity3 as $en) {
+    echo '<pre>' . print_r($en->getData(), true) . '</pre>';
+}

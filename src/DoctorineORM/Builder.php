@@ -2,7 +2,7 @@
 
 namespace DrMVC\DoctorineORM;
 
-class Builder// implements BuilderInterface
+class Builder
 {
     private $_sql;
 
@@ -16,7 +16,7 @@ class Builder// implements BuilderInterface
 
     private $_offset;
 
-    public function __construct(string $table = null)//: ?string 7.1 // null|string
+    public function __construct(string $table)
     {
         $this->setTable($table);
     }
@@ -30,7 +30,7 @@ class Builder// implements BuilderInterface
         return $sql;
     }
 
-    private function prepareSql()//:void 7.1
+    private function prepareSql()
     {
         $this->setSql(
             $this->getSql()
@@ -39,7 +39,7 @@ class Builder// implements BuilderInterface
         );
     }
 
-    private function setSql(string $sql)//: void 7.1
+    private function setSql(string $sql)
     {
         $this->_sql = $sql;
     }
@@ -88,9 +88,8 @@ class Builder// implements BuilderInterface
         $this->_placeholders += $this->map($placeholders, $prefix);
     }
 
-    private function clean()//: void 7.1
+    private function clean()
     {
-        #$this->__table;
         $this->_sql = null;
         $this->_where = [];
         $this->_limit = null;
@@ -171,6 +170,13 @@ class Builder// implements BuilderInterface
     {
         $this->where($where);
         $this->setSql('DELETE FROM ' . $this->getTable() . ' ');
+
+        return $this;
+    }
+
+    protected function rawSql(string $sql): Builder
+    {
+        $this->setSql($sql);
 
         return $this;
     }
