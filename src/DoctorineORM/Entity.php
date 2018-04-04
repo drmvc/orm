@@ -2,6 +2,12 @@
 
 namespace DrMVC\DoctorineORM;
 
+/**
+ * Class Entity
+ * @package DrMVC\DoctorineORM
+ *
+ * @property int id
+ */
 class Entity
 {
     /**

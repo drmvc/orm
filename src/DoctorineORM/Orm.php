@@ -45,7 +45,7 @@ class Orm extends Builder
         if (0 === $id) {
             $this->exec((string)$this->insert($data), $this->getPlaceholders());
         } else {
-            if ($this->findById($id) instanceof Entity) {
+            if ($this->findById($id)) {
                 $this->exec((string)$this->update($data)->byId($id), $this->getPlaceholders());
             } else {
                 throw new InvalidArgumentException('Form id does not exist');
