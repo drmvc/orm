@@ -1,4 +1,4 @@
-.idea
-vendor/
+/.idea/
+/vendor/
 /index.php
-composer.lock
+/composer.lock
