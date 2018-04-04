@@ -1,51 +1,32 @@
 <?php declare(strict_types=1);
 
-namespace DrMVC\DoctorineORM;
+namespace Test;
+
+use DrMVC\DoctorineORM\Orm;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$builder = new Builder('test_table');
+$config = include('config.php');
 
-echo 'SELECT<br>---<br>';
+$pdo = new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['username'],
+    $config['password'],
+    [
+        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+        #PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+        \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4'",
+        \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,
+    ]
+);
 
-$builder
-    ->select()
-    #->where(['id' => 1, 'name' => 'Vasya'])
-    ->limit(10, 10);
+$orm = new Orm('test_table', $pdo);
 
-echo $builder;
-echo '<pre>' . print_r($builder->getPlaceholders(), true) . '</pre>';
+#echo '<pre>' . print_r($orm, true) . '</pre>';
 
-echo 'INSERT<br>---<br>';
+$entity = $orm->findById(1);
 
-$builder
-    ->insert([
-        'name' => 'Vasya',
-        'age' => 18,
-        'time' => time()
-    ]);
+echo '<pre>' . print_r($entity, true) . '</pre>';
 
-echo $builder;
-echo '<pre>' . print_r($builder->getPlaceholders(), true) . '</pre>';
+$entity = $orm->findAll();
 
-echo 'UPDATE<br>---<br>';
+echo '<pre>' . print_r($entity, true) . '</pre>';
 
-$builder
-    ->update([
-        'name' => 'Vasya',
-        'age' => 18,
-        'time' => time()
-    ])
-    ->byId(11);
-
-echo $builder;
-echo '<pre>' . print_r($builder->getPlaceholders(), true) . '</pre>';
-
-echo 'DELETE<br>---<br>';
-
-$builder->delete(['name' => 'Vasya']);
-
-echo $builder;
-echo '<pre>' . print_r($builder->getPlaceholders(), true) . '</pre>';
-
-#echo '<pre>' . print_r($builder, true) . '</pre>';
