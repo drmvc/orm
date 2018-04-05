@@ -6,12 +6,17 @@ use InvalidArgumentException;
 use PDO;
 use PDOStatement;
 
-class Orm extends Builder
+class Orm
 {
     /**
      * @var PDO
      */
     private $pdo;
+
+    /**
+     * @var Builder
+     */
+    private $builder;
 
     /**
      * Orm constructor.
@@ -20,9 +25,24 @@ class Orm extends Builder
      */
     public function __construct(string $table, PDO $pdo)
     {
-        $this->setTable($table);
         $this->setInstance($pdo);
-        parent::__construct($this->getTable());
+        $this->setBuilder(new Builder($table));
+    }
+
+    /**
+     * @param Builder $builder
+     */
+    private function setBuilder(Builder $builder)
+    {
+        $this->builder = $builder;
+    }
+
+    /**
+     * @return Builder
+     */
+    private function getBuilder(): Builder
+    {
+        return $this->builder;
     }
 
     /**
@@ -43,10 +63,10 @@ class Orm extends Builder
 
         $id = (int)$entity->id;
         if (0 === $id) {
-            $this->exec((string)$this->insert($data), $this->getPlaceholders());
+            $this->exec((string)$this->getBuilder()->insert($data), $this->getBuilder()->getPlaceholders());
         } else {
             if ($this->findById($id)) {
-                $this->exec((string)$this->update($data)->byId($id), $this->getPlaceholders());
+                $this->exec((string)$this->getBuilder()->update($data)->byId($id), $this->getBuilder()->getPlaceholders());
             } else {
                 throw new InvalidArgumentException('Form id does not exist');
             }
@@ -70,8 +90,8 @@ class Orm extends Builder
     public function findById(int $id): Entity
     {
         $entity = $this->getEntity(
-            (string)$this->select()->byId($id),
-            $this->getPlaceholders()
+            (string)$this->getBuilder()->select()->byId($id),
+            $this->getBuilder()->getPlaceholders()
         );
 
         return $entity[0];
@@ -120,8 +140,8 @@ class Orm extends Builder
     public function findAll(): array
     {
         return $this->getEntity(
-            (string)$this->select(),
-            $this->getPlaceholders()
+            (string)$this->getBuilder()->select(),
+            $this->getBuilder()->getPlaceholders()
         );
     }
 }

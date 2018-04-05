@@ -15,7 +15,8 @@ $config->load(__DIR__ . '/config.php');
 
 // Open connection with database
 $db = new Database($config);
-$instance = $db->getInstance(); // PDO here and not QueryInterface
+// ORM feint - need not null argument from first instance
+$instance = $db->getInstance('PDO')->getInstance();
 
 $orm = new Orm('test_table', $instance);
 

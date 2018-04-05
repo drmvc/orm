@@ -2,7 +2,9 @@
 
 namespace DrMVC\DoctorineORM;
 
-class Builder
+use DrMVC\DoctorineORM\Interfaces\BuilderInterface;
+
+class Builder implements BuilderInterface
 {
     private $_sql;
 
@@ -96,7 +98,7 @@ class Builder
         $this->_offset = null;
     }
 
-    protected function limit(int $limit, int $offset = 0): Builder
+    public function limit(int $limit, int $offset = 0): BuilderInterface
     {
         $this->_limit = $limit;
         $this->_offset = $offset;
@@ -104,14 +106,14 @@ class Builder
         return $this;
     }
 
-    protected function byId(int $id): Builder
+    public function byId(int $id): BuilderInterface
     {
         $this->_where = ['id' => $id];
 
         return $this;
     }
 
-    protected function select(array $where = []): Builder
+    public function select(array $where = []): BuilderInterface
     {
         $this->where($where);
         $this->setSql('SELECT * FROM ' . $this->getTable() . ' ');
@@ -119,7 +121,7 @@ class Builder
         return $this;
     }
 
-    protected function where(array $where): Builder
+    public function where(array $where): BuilderInterface
     {
         $this->_where += $where;
 
@@ -131,12 +133,12 @@ class Builder
         return $this->_table;
     }
 
-    protected function setTable(string $table)//: void 7.1
+    public function setTable(string $table)//: void 7.1
     {
         $this->_table = $table;
     }
 
-    protected function update(array $data, array $where = []): Builder
+    public function update(array $data, array $where = []): BuilderInterface
     {
         $this->where($where);
         $placeholders = $this->map($data, ':update');
@@ -147,7 +149,7 @@ class Builder
         return $this;
     }
 
-    protected function getPlaceholders(): array
+    public function getPlaceholders(): array
     {
         $placeholders = $this->_placeholders;
         // clean placeholders
@@ -156,7 +158,7 @@ class Builder
         return $placeholders;
     }
 
-    protected function insert(array $data): Builder
+    public function insert(array $data): BuilderInterface
     {
         $placeholders = $this->map($data, ':insert');
         $this->setSql('INSERT INTO ' . $this->getTable() . ' (' . implode(', ',
@@ -166,7 +168,7 @@ class Builder
         return $this;
     }
 
-    protected function delete(array $where = []): Builder
+    public function delete(array $where = []): BuilderInterface
     {
         $this->where($where);
         $this->setSql('DELETE FROM ' . $this->getTable() . ' ');
@@ -174,7 +176,7 @@ class Builder
         return $this;
     }
 
-    protected function rawSql(string $sql): Builder
+    public function rawSql(string $sql): BuilderInterface
     {
         $this->setSql($sql);
 
