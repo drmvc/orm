@@ -7,6 +7,7 @@ namespace DrMVC\DoctorineORM;
  * @package DrMVC\DoctorineORM
  *
  * @property int id
+ * @method Entity getId(): int
  */
 class Entity
 {
@@ -22,6 +23,8 @@ class Entity
     }
 
     /**
+     * Get all fields
+     *
      * @return array
      */
     public function getData(): array

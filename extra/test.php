@@ -16,28 +16,26 @@ $config->load(__DIR__ . '/config.php');
 // Open connection with database
 $db = new Database($config);
 // ORM feint - need not null argument from first instance
-$instance = $db->getInstance('PDO')->getInstance();
+$instance = $db->getInstance('test_table')->getInstance();
 
 $orm = new Orm('test_table', $instance);
 
-$entity = $orm->findById(1);
+$entity = new Entity();
 
-$entity->name = 'Pavel'; // =)
-$entity->email = 'pavel@mail.ru';
+$entity->setName('Kolya');
+$entity->email = 'qweqwe';
+$entity->setPassword('qwerty3');
 
 $orm->saveEntity($entity);
 
+if ($entity = $orm->findById(1)) {
+    $entity->name = 'Pavel';
+    $entity->email = 'pavel@mail.ru';
+    $entity->setPassword('qwerty3');
+    $orm->saveEntity($entity);
+}
 
-$entity2 = new Entity();
-
-$entity2->setName('Kolya');
-//$entity2->email = '';
-$entity2->setPassword('qwerty3');
-
-$orm->saveEntity($entity2);
-
-$entity3 = $orm->findAll();
-
-foreach ($entity3 as $en) {
-    echo '<pre>' . print_r($en->getData(), true) . '</pre>';
+foreach ($orm->findAll() as $en) {
+    echo '<pre>' . print_r($en->getName() . ' - ' . $en->getId(), true) . '</pre>';
+    echo '<pre>' . print_r($orm->deleteEntity($en), true) . '</pre>';
 }

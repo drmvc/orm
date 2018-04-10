@@ -6,6 +6,7 @@ use DrMVC\DoctorineORM\Interfaces\BuilderInterface;
 
 class Builder implements BuilderInterface
 {
+
     private $_sql;
 
     private $_placeholders = [];
@@ -18,11 +19,18 @@ class Builder implements BuilderInterface
 
     private $_offset;
 
+    /**
+     * Builder constructor.
+     * @param string $table
+     */
     public function __construct(string $table)
     {
         $this->setTable($table);
     }
 
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         $this->prepareSql();
@@ -32,6 +40,11 @@ class Builder implements BuilderInterface
         return $sql;
     }
 
+    /**
+     * Build and set sql query
+     *
+     * @return void
+     */
     private function prepareSql()
     {
         $this->setSql(
@@ -41,16 +54,25 @@ class Builder implements BuilderInterface
         );
     }
 
+    /**
+     * @param string $sql
+     */
     private function setSql(string $sql)
     {
         $this->_sql = $sql;
     }
 
-    private function getSql()
+    /**
+     * @return string
+     */
+    private function getSql(): string
     {
         return $this->_sql;
     }
 
+    /**
+     * @return string
+     */
     private function prepareWhere(): string
     {
         if (\count($this->_where)) {
@@ -64,6 +86,11 @@ class Builder implements BuilderInterface
         return '';
     }
 
+    /**
+     * @param array $array
+     * @param string $prefix
+     * @return array
+     */
     private function map(array $array, string $prefix): array
     {
         $result = [];
@@ -74,6 +101,11 @@ class Builder implements BuilderInterface
         return $result;
     }
 
+    /**
+     * @param array $keys
+     * @param array $values
+     * @return array
+     */
     private function keyValueFormat(array $keys, array $values): array
     {
         return array_map(
@@ -85,11 +117,18 @@ class Builder implements BuilderInterface
         );
     }
 
-    private function setPlaceholders(array $placeholders, string $prefix)//: void 7.1
+    /**
+     * @param array $placeholders
+     * @param string $prefix
+     */
+    private function setPlaceholders(array $placeholders, string $prefix)
     {
         $this->_placeholders += $this->map($placeholders, $prefix);
     }
 
+    /**
+     * @return void
+     */
     private function clean()
     {
         $this->_sql = null;
@@ -98,6 +137,11 @@ class Builder implements BuilderInterface
         $this->_offset = null;
     }
 
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @return BuilderInterface
+     */
     public function limit(int $limit, int $offset = 0): BuilderInterface
     {
         $this->_limit = $limit;
@@ -106,6 +150,12 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * Allias method for where with id argument
+     *
+     * @param int $id
+     * @return BuilderInterface
+     */
     public function byId(int $id): BuilderInterface
     {
         $this->_where = ['id' => $id];
@@ -113,6 +163,10 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @param array $where
+     * @return BuilderInterface
+     */
     public function select(array $where = []): BuilderInterface
     {
         $this->where($where);
@@ -121,6 +175,10 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @param array $where
+     * @return BuilderInterface
+     */
     public function where(array $where): BuilderInterface
     {
         $this->_where += $where;
@@ -128,16 +186,28 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
     protected function getTable(): string
     {
         return $this->_table;
     }
 
-    public function setTable(string $table)//: void 7.1
+    /**
+     * @param string $table
+     * @return void
+     */
+    public function setTable(string $table)
     {
         $this->_table = $table;
     }
 
+    /**
+     * @param array $data
+     * @param array $where
+     * @return BuilderInterface
+     */
     public function update(array $data, array $where = []): BuilderInterface
     {
         $this->where($where);
@@ -149,6 +219,9 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getPlaceholders(): array
     {
         $placeholders = $this->_placeholders;
@@ -158,6 +231,10 @@ class Builder implements BuilderInterface
         return $placeholders;
     }
 
+    /**
+     * @param array $data
+     * @return BuilderInterface
+     */
     public function insert(array $data): BuilderInterface
     {
         $placeholders = $this->map($data, ':insert');
@@ -168,17 +245,14 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @param array $where
+     * @return BuilderInterface
+     */
     public function delete(array $where = []): BuilderInterface
     {
         $this->where($where);
         $this->setSql('DELETE FROM ' . $this->getTable() . ' ');
-
-        return $this;
-    }
-
-    public function rawSql(string $sql): BuilderInterface
-    {
-        $this->setSql($sql);
 
         return $this;
     }

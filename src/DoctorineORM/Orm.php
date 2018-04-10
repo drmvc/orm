@@ -2,7 +2,6 @@
 
 namespace DrMVC\DoctorineORM;
 
-use InvalidArgumentException;
 use PDO;
 use PDOStatement;
 
@@ -30,22 +29,6 @@ class Orm
     }
 
     /**
-     * @param Builder $builder
-     */
-    private function setBuilder(Builder $builder)
-    {
-        $this->builder = $builder;
-    }
-
-    /**
-     * @return Builder
-     */
-    private function getBuilder(): Builder
-    {
-        return $this->builder;
-    }
-
-    /**
      * @param PDO $instance
      */
     private function setInstance(PDO $instance)
@@ -53,48 +36,46 @@ class Orm
         $this->pdo = $instance;
     }
 
+    /**
+     * @param Builder $builder
+     */
+    private function setBuilder(Builder $builder)
+    {
+        $this->builder = $builder;
+    }
+
     /** Save or update
      * @param Entity $entity
-     * @throws InvalidArgumentException
      */
     public function saveEntity(Entity $entity)
     {
         $data = $entity->getData();
-
         $id = (int)$entity->id;
-        if (0 === $id) {
-            $this->exec((string)$this->getBuilder()->insert($data), $this->getBuilder()->getPlaceholders());
+        if ($this->findById($id)) {
+            $this->exec(
+                (string)$this->getBuilder()->update($data)->byId($id),
+                $this->getBuilder()->getPlaceholders()
+            );
         } else {
-            if ($this->findById($id)) {
-                $this->exec((string)$this->getBuilder()->update($data)->byId($id), $this->getBuilder()->getPlaceholders());
-            } else {
-                throw new InvalidArgumentException('Form id does not exist');
-            }
+            $this->exec(
+                (string)$this->getBuilder()->insert($data),
+                $this->getBuilder()->getPlaceholders()
+            );
         }
-    }
-
-    public function deleteEntity(Entity $entity)
-    {
-
-    }
-
-    public function execRaw(string $sql)
-    {
-
     }
 
     /**
      * @param int $id
-     * @return Entity
+     * @return Entity|null
      */
-    public function findById(int $id): Entity
+    public function findById(int $id)//: ?Entity
     {
         $entity = $this->getEntity(
             (string)$this->getBuilder()->select()->byId($id),
             $this->getBuilder()->getPlaceholders()
         );
 
-        return $entity[0];
+        return $entity[0] ?? null;
     }
 
     /**
@@ -106,10 +87,11 @@ class Orm
     {
         $stmt = $this->exec($sql, $placeholders);
         $result = [];
-        while ($entity = $stmt->fetchObject(Entity::class)) {
-            $result[] = $entity;
+        if ($stmt->rowCount()) {
+            while ($entity = $stmt->fetchObject(Entity::class)) {
+                $result[] = $entity;
+            }
         }
-
         return $result;
     }
 
@@ -132,6 +114,24 @@ class Orm
     private function getInstance(): PDO
     {
         return $this->pdo;
+    }
+
+    /**
+     * @return Builder
+     */
+    private function getBuilder(): Builder
+    {
+        return $this->builder;
+    }
+
+    /**
+     * @param Entity $entity
+     * @return int
+     */
+    public function deleteEntity(Entity $entity): int
+    {
+        return $this->exec((string)$this->getBuilder()->delete()->byId((int)$entity->getId()),
+            $this->getBuilder()->getPlaceholders())->rowCount();
     }
 
     /** Array Entities
