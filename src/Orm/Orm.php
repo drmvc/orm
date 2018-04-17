@@ -44,24 +44,29 @@ class Orm
         $this->builder = $builder;
     }
 
-    /** Save or update
+    /**
+     * Save or update
+     *
      * @param Entity $entity
+     * @return PDOStatement
      */
-    public function saveEntity(Entity $entity)
+    public function saveEntity(Entity $entity): PDOStatement
     {
         $data = $entity->getData();
         $id = (int)$entity->id;
-        if ($this->findById($id)) {
-            $this->exec(
+        if ($id > 0 && $this->findById($id)) {
+            $result = $this->exec(
                 (string)$this->getBuilder()->update($data)->byId($id),
                 $this->getBuilder()->getPlaceholders()
             );
         } else {
-            $this->exec(
+            $result = $this->exec(
                 (string)$this->getBuilder()->insert($data),
                 $this->getBuilder()->getPlaceholders()
             );
         }
+
+        return $result;
     }
 
     /**
@@ -87,11 +92,12 @@ class Orm
     {
         $stmt = $this->exec($sql, $placeholders);
         $result = [];
-        if ($stmt->rowCount()) {
+        if ($stmt) {
             while ($entity = $stmt->fetchObject(Entity::class)) {
                 $result[] = $entity;
             }
         }
+
         return $result;
     }
 
