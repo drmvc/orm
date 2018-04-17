@@ -15,7 +15,8 @@ composer require drmvc/orm
 
 ## How to use
 
-```
+```php
+
 <?php
 
 use DrMVC\Database;
@@ -43,6 +44,7 @@ $entity->setPassword('qwerty3');
 
 $orm->saveEntity($entity);
 
+// if find, update data
 if ($entity = $orm->findById(1)) {
     $entity->name = 'Pavel';
     $entity->email = 'pavel@mail.ru';
