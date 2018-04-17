@@ -9,4 +9,11 @@ coding_style:
         spaces:
             around_operators:
                 concatenation: true
-build: true
+build:
+    tests:
+        override:
+            -
+                command: phpunit --coverage-clover=test/Test.php
+                coverage:
+                    file: my-coverage-file
+                    format: php-clover
