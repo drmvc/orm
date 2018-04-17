@@ -28,9 +28,13 @@
     "drmvc/config": "^3.0.0",
     "zendframework/zend-coding-standard": "^1.0"
   },
+  "suggest": {
+    "ext-xdebug": "^2.6.0"
+  },
   "scripts": {
     "cs-check": "phpcs",
-    "cs-fix": "phpcbf"
+    "cs-fix": "phpcbf",
+    "test-coverage": "phpunit --coverage-clover clover.xml"
   },
   "minimum-stability": "stable"
 }

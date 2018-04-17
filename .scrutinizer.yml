@@ -12,8 +12,10 @@ coding_style:
 build:
     tests:
         override:
-            -
-                command: 'php ./vendor/bin/phpunit --coverage-clover=coverage-clover'
-                        coverage:
-                          file: 'coverage-clover'
-                          format: 'php-clover'
+          # in phpunit.xml.dist, tests annotated with "@group mysql" are
+          # excluded, revert this
+          -
+            command: 'php ./vendor/bin/phpunit --coverage-clover=coverage-clover  --exclude-group ""'
+            coverage:
+              file: 'coverage-clover'
+              format: 'php-clover'
