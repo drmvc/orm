@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace DrMVC\DoctorineORM;
+namespace DrMVC\Orm;
 
 use PDO;
 use PDOStatement;

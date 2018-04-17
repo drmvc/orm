@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace DrMVC\DoctorineORM;
+namespace DrMVC\Orm;
 
-use DrMVC\DoctorineORM\Interfaces\BuilderInterface;
+use DrMVC\Orm\Interfaces\BuilderInterface;
 
 class Builder implements BuilderInterface
 {

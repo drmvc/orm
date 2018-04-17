@@ -4,8 +4,8 @@ namespace Test;
 
 use DrMVC\Database;
 use DrMVC\Config;
-use DrMVC\DoctorineORM\Entity;
-use DrMVC\DoctorineORM\Orm;
+use DrMVC\Orm\Entity;
+use DrMVC\Orm\Orm;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

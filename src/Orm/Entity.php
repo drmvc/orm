@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace DrMVC\DoctorineORM;
+namespace DrMVC\Orm;
 
 /**
  * Class Entity
- * @package DrMVC\DoctorineORM
+ * @package DrMVC\Orm
  *
  * @property int id
  * @method Entity getId(): int
