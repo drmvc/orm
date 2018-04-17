@@ -13,9 +13,11 @@
 
 composer require drmvc/orm
 
-## Use
+## How to use
 
 ```
+<?php
+
 use DrMVC\Database;
 use DrMVC\Config;
 use DrMVC\Orm\Entity;
