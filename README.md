@@ -1,5 +1,5 @@
-# DrMVC\DoctorineORM
+# DrMVC\orm
 
-[![PHP 7 ready](https://php7ready.timesplinter.ch/drmvc/DoctorineORM/master/badge.svg)](https://travis-ci.org/drmvc/DoctorineORM)
-[![Code Climate](https://codeclimate.com/github/drmvc/DoctorineORM/badges/gpa.svg)](https://codeclimate.com/github/drmvc/DoctorineORM)
-[![Scrutinizer CQ](https://scrutinizer-ci.com/g/drmvc/DoctorineORM/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drmvc/DoctorineORM/)
+[![PHP 7 ready](https://php7ready.timesplinter.ch/drmvc/orm/master/badge.svg)](https://travis-ci.org/drmvc/orm)
+[![Code Climate](https://codeclimate.com/github/drmvc/orm/badges/gpa.svg)](https://codeclimate.com/github/drmvc/orm)
+[![Scrutinizer CQ](https://scrutinizer-ci.com/g/drmvc/orm/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drmvc/orm/)
