@@ -1,14 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace DrMVC\Orm;
+namespace DrMVC\Orm\Tests;
 
 use PDO;
 use PHPUnit\Framework\TestCase;
+use DrMVC\Orm;
+use DrMVC\Orm\Entity;
 
-class Test extends TestCase
+class OrmTest extends TestCase
 {
 
-    private $pdo;
+    private static $pdo;
 
     private $orm;
 
@@ -34,12 +36,12 @@ class Test extends TestCase
 
     public function getPDO(): PDO
     {
-        if (!$this->pdo) {
-            $pdo = new PDO('sqlite:' . __DIR__ . '/test.db');
+        if (!self::$pdo) {
+            $pdo = new PDO('sqlite::memory:');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->pdo = $pdo;
+            self::$pdo = $pdo;
         }
-        return $this->pdo;
+        return self::$pdo;
     }
 
     public function test_insert()

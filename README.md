@@ -1,5 +1,3 @@
-# DrMVC\orm
-
 [![Latest Stable Version](https://poser.pugx.org/drmvc/orm/v/stable)](https://packagist.org/packages/drmvc/orm)
 [![Build Status](https://travis-ci.org/drmvc/orm.svg?branch=master)](https://travis-ci.org/drmvc/orm)
 [![Total Downloads](https://poser.pugx.org/drmvc/orm/downloads)](https://packagist.org/packages/drmvc/orm)
@@ -8,6 +6,12 @@
 [![Code Climate](https://codeclimate.com/github/drmvc/orm/badges/gpa.svg)](https://codeclimate.com/github/drmvc/orm)
 [![Scrutinizer CQ](https://scrutinizer-ci.com/g/drmvc/orm/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drmvc/orm/)
 [![Code Coverage](https://scrutinizer-ci.com/g/drmvc/orm/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/drmvc/orm/?branch=master)
+
+# DrMVC\Orm
+
+Simple and easy-to-use lightweight ORM.
+
+    composer require drmvc/orm
 
 ## Install
 
