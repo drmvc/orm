@@ -1,5 +1,4 @@
 /.idea/
 /vendor/
 /index.php
-/tests/test.db
 /composer.lock

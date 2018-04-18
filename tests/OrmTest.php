@@ -45,7 +45,7 @@ class OrmTest extends TestCase
 
     public function test__construct()
     {
-        $this->assertInstanceOf(Orm::class, $this->orm);
+        $this->assertInstanceOf(Orm::class, new Orm('test', $this->getPDO()));
     }
 
     public function test_saveEntity()
@@ -56,6 +56,15 @@ class OrmTest extends TestCase
         $entity->name = 'Kolya';
         $entity->email = 'qweqwe';
         $entity->password = 'qwerty';
+
+        $count = $this->orm->saveEntity($entity);
+        $this->assertEquals(1, $count->rowCount());
+    }
+
+    public function test_updateEntity()
+    {
+        $entity = $this->orm->findById(1);
+        $entity->email = 'qweqwe';
 
         $count = $this->orm->saveEntity($entity);
         $this->assertEquals(1, $count->rowCount());
