@@ -16,11 +16,7 @@ class Entity
      *
      * @var array
      */
-    private $_data;
-
-    public function __construct()
-    {
-    }
+    private $_data = [];
 
     /**
      * Get all fields
@@ -86,9 +82,7 @@ class Entity
             case 'set':
                 $this->$property = $arguments[0];
                 break;
-
-            default :
-                return false;
         }
+        return false;
     }
 }

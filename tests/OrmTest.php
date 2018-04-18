@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use DrMVC\Orm;
 use DrMVC\Orm\Entity;
 
-class Test extends TestCase
+class OrmTest extends TestCase
 {
 
     private static $pdo;
