@@ -7,17 +7,13 @@ use DrMVC\Orm\Interfaces\BuilderInterface;
 class Builder implements BuilderInterface
 {
 
-    private $_sql;
+    private $sql;
 
-    private $_placeholders = [];
+    private $placeholders = [];
 
-    private $_table;
+    private $table;
 
-    private $_where = [];
-
-    private $_limit;
-
-    private $_offset;
+    private $where = [];
 
     /**
      * Builder constructor.
@@ -37,7 +33,7 @@ class Builder implements BuilderInterface
         $sql = $this->getSql();
         $this->clean();
 
-        return $sql;
+        return trim($sql);
     }
 
     /**
@@ -50,7 +46,6 @@ class Builder implements BuilderInterface
         $this->setSql(
             $this->getSql()
             . $this->prepareWhere()
-            . ($this->_limit ? 'LIMIT ' . $this->_limit . ' OFFSET ' . $this->_offset : '')
         );
     }
 
@@ -59,7 +54,7 @@ class Builder implements BuilderInterface
      */
     private function setSql(string $sql)
     {
-        $this->_sql = $sql;
+        $this->sql = $sql;
     }
 
     /**
@@ -67,7 +62,7 @@ class Builder implements BuilderInterface
      */
     private function getSql(): string
     {
-        return $this->_sql;
+        return $this->sql;
     }
 
     /**
@@ -75,10 +70,10 @@ class Builder implements BuilderInterface
      */
     private function prepareWhere(): string
     {
-        if (\count($this->_where)) {
-            $placeholders = $this->map($this->_where, ':where');
-            $where = $this->keyValueFormat($this->_where, $placeholders);
-            $this->setPlaceholders($this->_where, 'where');
+        if (\count($this->where)) {
+            $placeholders = $this->map($this->where, ':where');
+            $where = $this->keyValueFormat($this->where, $placeholders);
+            $this->setPlaceholders($this->where, 'where');
 
             return 'WHERE ' . implode(' AND ', $where) . ' ';
         }
@@ -123,7 +118,7 @@ class Builder implements BuilderInterface
      */
     private function setPlaceholders(array $placeholders, string $prefix)
     {
-        $this->_placeholders += $this->map($placeholders, $prefix);
+        $this->placeholders += $this->map($placeholders, $prefix);
     }
 
     /**
@@ -131,23 +126,8 @@ class Builder implements BuilderInterface
      */
     private function clean()
     {
-        $this->_sql = null;
-        $this->_where = [];
-        $this->_limit = null;
-        $this->_offset = null;
-    }
-
-    /**
-     * @param int $limit
-     * @param int $offset
-     * @return BuilderInterface
-     */
-    public function limit(int $limit, int $offset = 0): BuilderInterface
-    {
-        $this->_limit = $limit;
-        $this->_offset = $offset;
-
-        return $this;
+        $this->sql = null;
+        $this->where = [];
     }
 
     /**
@@ -158,7 +138,7 @@ class Builder implements BuilderInterface
      */
     public function byId(int $id): BuilderInterface
     {
-        $this->_where = ['id' => $id];
+        $this->where = ['id' => $id];
 
         return $this;
     }
@@ -181,7 +161,7 @@ class Builder implements BuilderInterface
      */
     public function where(array $where): BuilderInterface
     {
-        $this->_where += $where;
+        $this->where += $where;
 
         return $this;
     }
@@ -189,18 +169,18 @@ class Builder implements BuilderInterface
     /**
      * @return string
      */
-    protected function getTable(): string
+    private function getTable(): string
     {
-        return $this->_table;
+        return $this->table;
     }
 
     /**
      * @param string $table
      * @return void
      */
-    public function setTable(string $table)
+    private function setTable(string $table)
     {
-        $this->_table = $table;
+        $this->table = $table;
     }
 
     /**
@@ -224,9 +204,9 @@ class Builder implements BuilderInterface
      */
     public function getPlaceholders(): array
     {
-        $placeholders = $this->_placeholders;
+        $placeholders = $this->placeholders;
         // clean placeholders
-        $this->_placeholders = [];
+        $this->placeholders = [];
 
         return $placeholders;
     }

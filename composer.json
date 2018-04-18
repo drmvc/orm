@@ -24,7 +24,7 @@
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0",
-    "drmvc/database": "@dev",
+    "drmvc/database": "^3.0.0",
     "drmvc/config": "^3.0.0",
     "zendframework/zend-coding-standard": "^1.0"
   },

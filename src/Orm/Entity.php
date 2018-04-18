@@ -16,7 +16,7 @@ class Entity
      *
      * @var array
      */
-    private $_data = [];
+    private $data = [];
 
     /**
      * Get all fields
@@ -25,7 +25,7 @@ class Entity
      */
     public function getData(): array
     {
-        return $this->_data;
+        return $this->data;
     }
 
     /**
@@ -34,7 +34,7 @@ class Entity
      */
     public function __get(string $name)
     {
-        return $this->_data[$name] ?? null;
+        return $this->data[$name] ?? null;
     }
 
     /**
@@ -43,7 +43,7 @@ class Entity
      */
     public function __set(string $name, $value)//: void 7.1
     {
-        $this->_data[$name] = $value;
+        $this->data[$name] = $value;
     }
 
     /**
@@ -52,7 +52,7 @@ class Entity
      */
     public function __isset(string $name): bool
     {
-        return isset($this->_data[$name]);
+        return isset($this->data[$name]);
     }
 
     /**
@@ -60,29 +60,6 @@ class Entity
      */
     public function __unset(string $name)//: void 7.1
     {
-        unset($this->_data[$name]);
-    }
-
-    /**
-     * Magic setters and getters
-     *
-     * @param $name
-     * @param $arguments
-     * @return bool|mixed|null
-     */
-    public function __call($name, $arguments)
-    {
-        $action = substr($name, 0, 3);
-        $property = strtolower(substr($name, 3));
-        switch ($action) {
-            case 'get':
-                return $this->$property;
-                break;
-
-            case 'set':
-                $this->$property = $arguments[0];
-                break;
-        }
-        return false;
+        unset($this->data[$name]);
     }
 }

@@ -31,10 +31,9 @@ class OrmTest extends TestCase
         )';
         $this->getPDO()->exec($sql);
         $this->orm = new Orm('test', $this->getPDO());
-        $this->assertInstanceOf(Orm::class, $this->orm);
     }
 
-    public function getPDO(): PDO
+    private function getPDO(): PDO
     {
         if (!self::$pdo) {
             $pdo = new PDO('sqlite::memory:');
@@ -44,20 +43,25 @@ class OrmTest extends TestCase
         return self::$pdo;
     }
 
-    public function test_insert()
+    public function test__construct()
+    {
+        $this->assertInstanceOf(Orm::class, $this->orm);
+    }
+
+    public function test_saveEntity()
     {
         $entity = new Entity();
 
         $entity->id = null;
-        $entity->setName('Kolya');
+        $entity->name = 'Kolya';
         $entity->email = 'qweqwe';
-        $entity->setPassword('qwerty');
+        $entity->password = 'qwerty';
 
         $count = $this->orm->saveEntity($entity);
         $this->assertEquals(1, $count->rowCount());
     }
 
-    public function test_getById()
+    public function test_findById()
     {
         $entity = $this->orm->findById(1);
         $this->assertInstanceOf(Entity::class, $entity);
@@ -70,7 +74,7 @@ class OrmTest extends TestCase
         $this->assertInstanceOf(Entity::class, $entity[0]);
     }
 
-    public function test_delete()
+    public function test_deleteEntity()
     {
         $entity = $this->orm->findById(1);
         $this->assertEquals(1, $this->orm->deleteEntity($entity));

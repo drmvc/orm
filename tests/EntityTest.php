@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DrMVC\Orm\Tests;
 
@@ -29,20 +29,6 @@ class EntityTest extends TestCase
         $obj = new Entity();
         $obj->id = 123;
         $this->assertEquals(123, $obj->id);
-    }
-
-    public function test__call()
-    {
-        $obj = new Entity();
-        $obj->dummy = 'dummy';
-        $this->assertEquals('dummy', $obj->getDummy());
-    }
-
-    public function testGetId()
-    {
-        $obj = new Entity();
-        $obj->id = 234;
-        $this->assertEquals(234, $obj->getId());
     }
 
     public function test__isset()

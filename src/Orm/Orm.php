@@ -136,7 +136,7 @@ class Orm
      */
     public function deleteEntity(Entity $entity): int
     {
-        return $this->exec((string)$this->getBuilder()->delete()->byId((int)$entity->getId()),
+        return $this->exec((string)$this->getBuilder()->delete()->byId((int)$entity->id),
             $this->getBuilder()->getPlaceholders())->rowCount();
     }
 

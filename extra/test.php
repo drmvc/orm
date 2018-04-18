@@ -6,6 +6,7 @@ use DrMVC\Database;
 use DrMVC\Config;
 use DrMVC\Orm\Entity;
 use DrMVC\Orm\Orm;
+use DrMVC\Orm\Builder;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -21,20 +22,20 @@ $orm = new Orm('test_table', $instance);
 
 $entity = new Entity();
 
-$entity->setName('Kolya');
+$entity->name = 'Kolya';
 $entity->email = 'qweqwe';
-$entity->setPassword('qwerty3');
+$entity->password = 'qwerty3';
 
 $orm->saveEntity($entity);
 
 if ($entity = $orm->findById(1)) {
     $entity->name = 'Pavel';
     $entity->email = 'pavel@mail.ru';
-    $entity->setPassword('qwerty3');
+    $entity->password = 'qwerty3';
     $orm->saveEntity($entity);
 }
 
 foreach ($orm->findAll() as $en) {
-    echo '<pre>' . print_r($en->getName() . ' - ' . $en->getId(), true) . '</pre>';
+    echo '<pre>' . print_r($en->name . ' - ' . $en->id, true) . '</pre>';
     echo '<pre>' . print_r($orm->deleteEntity($en), true) . '</pre>';
 }

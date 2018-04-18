@@ -42,18 +42,6 @@ interface BuilderInterface
     public function byId(int $id): BuilderInterface;
 
     /**
-     * @param string $table
-     * @return mixed
-     */
-    public function setTable(string $table);
-
-    /**
-     * @param int $limit
-     * @return BuilderInterface
-     */
-    public function limit(int $limit): BuilderInterface;
-
-    /**
      * @return string
      */
     public function __toString(): string;
